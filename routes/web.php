@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffGudangController;
 use App\Http\Controllers\ManajerGudangController;
+use App\Http\Controllers\StockTransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [LoginController::class, 'index']);
@@ -29,6 +30,7 @@ Route::get('/admin/supplier', [AdminController::class, 'supplier'])->name('admin
 Route::get('/admin/user', [AdminController::class, 'user'])->name('admin.menu.user');
 Route::get('/admin/report', [AdminController::class, 'report'])->name('admin.menu.report');
 Route::get('/admin/setting', [AdminController::class, 'setting'])->name('admin.menu.setting');
+
 
 // Menu dari Staff Gudang
 

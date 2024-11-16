@@ -35,13 +35,13 @@ class LoginController extends Controller
             $user = Auth::user();
             switch ($user->role) {
                 case 'Admin':
-                    return redirect()->intended('/admin');
+                    return redirect()->intended('/admin/dashboard');
                     break;
                 case 'Staff Gudang':
-                    return redirect()->intended('/staff-gudang');
+                    return redirect()->intended('/staff-gudang/dashboard');
                     break;
                 case 'Manajer Gudang':
-                    return redirect()->intended('/manajer-gudang');
+                    return redirect()->intended('/manajer-gudang/dashboard');
                     break;
                 default:
                     return redirect()->intended('/dashboard');
