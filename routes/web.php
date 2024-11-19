@@ -42,12 +42,8 @@ Route::get('/staff-gudang/setting', [StaffGudangController::class, 'setting'])->
 // Menu dari Manajer Gudang
 
 Route::get('/manajer-gudang/dashboard', [ManajerGudangController::class, 'dashboard'])->name('manajer.menu.dashboard');
-Route::get('/manajer-gudang/transaction', [ManajerGudangController::class, 'transaction'])->name('manajer.menu.transaction');
-Route::get('/manajer-gudang/opname', [ManajerGudangController::class, 'opname'])->name('manajer.menu.opname');
-Route::get('/manajer-gudang/setting', [ManajerGudangController::class, 'setting'])->name('manajer.menu.setting');
-Route::get('/manajer-gudang/attributes', [ManajerGudangController::class, 'attributes'])->name('manajer.menu.attributes');
-Route::get('/manajer-gudang/categories', [ManajerGudangController::class, 'categories'])->name('manajer.menu.categories');
-Route::get('/manajer-gudang/data', [ManajerGudangController::class, 'dataproduct'])->name('manajer.menu.data');
-Route::get('/manajer-gudang/imporexpor', [ManajerGudangController::class, 'imporexpor'])->name('manajer.menu.imporexpor');
-Route::get('/manajer-gudang/report', [ManajerGudangController::class, 'report'])->name('manajer.menu.report');
+Route::get('/manajer-gudang/product', [ManajerGudangController::class, 'product'])->name('manajer.menu.product');
+Route::get('/manajer-gudang/stock', [ManajerGudangController::class, 'stock'])->name('manajer.menu.stock');
 Route::get('/manajer-gudang/supplier', [ManajerGudangController::class, 'supplier'])->name('manajer.menu.supplier');
+Route::get('/manajer-gudang/report', [ManajerGudangController::class, 'report'])->name('manajer.menu.report');
+Route::get('/manajer-gudang/setting', [ManajerGudangController::class, 'setting'])->name('manajer.menu.setting');

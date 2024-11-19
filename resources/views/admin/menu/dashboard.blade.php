@@ -2,67 +2,64 @@
 
 @section('content')
 <!-- Main Content Container -->
-<div class="p-6 w-full min-h-screen bg-gray-100">
-    <div class="grid grid-cols-2 gap-6">
-        <!-- Product Statistics Card -->
-        <div class="bg-gray-300 dark:bg-slate-800 rounded-lg p-4">
-            <h2 class="text-gray-900 dark:text-white text-2xl font-semibold mb-8">Jumlah Product</h2>
-            <div class="flex justify-between items-center px-4">
-                <div class="text-center">
-                    <p class="text-gray-900 dark:text-white mb-4">Perabotan</p>
-                    <p class="text-gray-900 dark:text-white text-4xl font-bold">{{ $productCounts['Perabotan'] }}</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-900 dark:text-white mb-4">Elektronik</p>
-                    <p class="text-gray-900 dark:text-white text-4xl font-bold">{{ $productCounts['Elektronik'] }}</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-900 dark:text-white mb-4">Aksesoris</p>
-                    <p class="text-gray-900 dark:text-white text-4xl font-bold">{{ $productCounts['Aksesoris'] }}</p>
-                </div>
-            </div>
-        </div>
+<div class="p-2 w-full min-h-screen bg-gray-100 dark:bg-gray-900">
+  <header class="py-4 mb-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Overview</h1>
+      <!-- Menampilkan nama pengguna -->
+      <p class="text-gray-600 dark:text-gray-300"><span class="text-red-500">Welcome,</span> {{ $name }} ({{ $email }})</p>
+    </div>
+  </header>
 
-        <!-- Transaction Table Card -->
-        <div class="bg-gray-300 dark:bg-slate-800 rounded-lg p-6">
-            <h2 class="text-gray-900 dark:text-white text-2xl font-semibold mb-6">Transaction</h2>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right">
-        <thead class="text-xs uppercase">
-                <th scope="col" class="px-6 py-3 text-gray-900 dark:text-white">
-                    Type
-                </th>
-                <th scope="col" class="px-6 py-3 text-gray-900 dark:text-white">
-                    Date
-                </th>
-                <th scope="col" class="px-6 py-3 text-gray-900 dark:text-white">
-                    Status
-                </th>
-            </tr>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Menampilkan jumlah produk berdasarkan kategori -->
+      @foreach($productCounts as $category => $count)
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">{{ $category }}</h2>
+          <p class="text-4xl font-bold text-gray-800 dark:text-gray-100">{{ $count }}</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Total produk dalam kategori {{ $category }}</p>
+        </div>
+      @endforeach
+    </div>
+
+    <!-- Menampilkan transaksi stok -->
+    <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Transaksi Stok</h2>
+      <table class="w-full text-left">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">ID</th>
+            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">Nama Produk</th>
+            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">Jumlah</th>
+            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">Tanggal</th>
+          </tr>
         </thead>
         <tbody>
-        @foreach($transactions as $transaction)
-                <tr class="border-b">
-                    <td class="px-6 py-4">
-                    {{ $transaction->type }}
-                    </td>
-                    <td class="px-6 py-4">
-                    {{ $transaction->date }}
-                    </td>
-                    <td class="px-6 py-4">
-                    {{ $transaction->status }}
-                    </td>
-                </tr>
-            @endforeach
+          @foreach($transactions as $transaction)
+            <tr class="border-t border-gray-200 dark:border-gray-700">
+              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->id }}</td>
+              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->product->name }}</td>
+              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->quantity }}</td>
+              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->created_at->format('d-m-Y') }}</td>
+            </tr>
+          @endforeach
         </tbody>
-    </table>
-</div>
-        </div>
+      </table>
     </div>
+  </main>
 
-    <!-- Coming Soon Card -->
-    <div class="bg-gray-300 dark:bg-slate-800 rounded-lg p-6 mt-6">
-        <h2 class="text-gray-900 dark:text-white text-2xl font-semibold">Coming Soon</h2>
+  <footer class="bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+      <p>&copy; 2019-2024 FlowOrb. All rights reserved.</p>
+      <div class="space-x-4">
+        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Privacy Policy</a>
+        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Licensing</a>
+        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Cookie Policy</a>
+        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Contact</a>
+      </div>
     </div>
+  </footer>
 </div>
+
 @endsection

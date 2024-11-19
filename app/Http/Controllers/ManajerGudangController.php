@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Psy\Readline\Hoa\Console;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Stock_Transaction;
+use App\Models\Supplier;
 
 class ManajerGudangController extends Controller
 {
@@ -14,101 +20,65 @@ class ManajerGudangController extends Controller
     public function data()
     {
         $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
+        $manajeremail = auth()->user()->email;
 
         return view('manajer.layout', [
             'name' => $manajerName,
-            'role' => $manajerRole
+            'email' => $manajeremail
         ]);
     }
     public function dashboard()
     {
         $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
+        $manajeremail = auth()->user()->email;
         return view('manajer.menu.dashboard', [
             'name' => $manajerName,
-            'role' => $manajerRole
+            'email' => $manajeremail
         ]);
     }
-    public function attributes()
+    public function product()
     {
         $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.attributes', [
+        $manajeremail = auth()->user()->email;
+        return view('manajer.menu.product', [
             'name' => $manajerName,
-            'role' => $manajerRole
+            'email' => $manajeremail
         ]);
     }
-    public function categories()
+    public function stock()
     {
         $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.categories', [
+        $manajeremail = auth()->user()->email;
+        return view('manajer.menu.stock', [
             'name' => $manajerName,
-            'role' => $manajerRole
-        ]);
-    }
-    public function dataproduct()
-    {
-        $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.data', [
-            'name' => $manajerName,
-            'role' => $manajerRole
-        ]);
-    }
-    public function imporexpor()
-    {
-        $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.imporexpor', [
-            'name' => $manajerName,
-            'role' => $manajerRole
-        ]);
-    }
-    public function opname()
-    {
-        $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.opname', [
-            'name' => $manajerName,
-            'role' => $manajerRole
-        ]);
-    }
-    public function report()
-    {
-        $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.report', [
-            'name' => $manajerName,
-            'role' => $manajerRole
+            'email' => $manajeremail
         ]);
     }
     public function supplier()
     {
         $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
+        $manajeremail = auth()->user()->email;
         return view('manajer.menu.supplier', [
             'name' => $manajerName,
-            'role' => $manajerRole
+            'email' => $manajeremail
+        ]);
+    }
+    public function report()
+    {
+        $manajerName = auth()->user()->name;
+        $manajeremail = auth()->user()->email;
+        return view('manajer.menu.report', [
+            'name' => $manajerName,
+            'email' => $manajeremail
         ]);
     }
     public function setting()
     {
         $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.dashboard', [
+        $manajeremail = auth()->user()->email;
+        return view('manajer.menu.setting', [
             'name' => $manajerName,
-            'role' => $manajerRole
-        ]);
-    }
-    public function transaction()
-    {
-        $manajerName = auth()->user()->name;
-        $manajerRole = auth()->user()->role;
-        return view('manajer.menu.transaction', [
-            'name' => $manajerName,
-            'role' => $manajerRole
+            'email' => $manajeremail
         ]);
     }
 }
