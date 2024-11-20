@@ -30,11 +30,11 @@ class StaffGudangController extends Controller
             'role' => $staffRole
         ]);
     }
-    public function transaction()
+    public function stock()
     {
         $staffName = auth()->user()->name;
         $staffRole = auth()->user()->role;
-        return view('staff.menu.transaction', [
+        return view('staff.menu.stock', [
             'name' => $staffName,
             'role' => $staffRole
         ]);

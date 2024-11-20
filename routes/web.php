@@ -35,7 +35,7 @@ Route::get('/admin/setting', [AdminController::class, 'setting'])->name('admin.m
 // Menu dari Staff Gudang
 
 Route::get('/staff-gudang/dashboard', [StaffGudangController::class, 'dashboard'])->name('staff.menu.dashboard');
-Route::get('/staff-gudang/transaction', [StaffGudangController::class, 'transaction'])->name('staff.menu.transaction');
+Route::get('/staff-gudang/stock', [StaffGudangController::class, 'stock'])->name('staff.menu.stock');
 Route::get('/staff-gudang/opname', [StaffGudangController::class, 'opname'])->name('staff.menu.opname');
 Route::get('/staff-gudang/setting', [StaffGudangController::class, 'setting'])->name('staff.menu.setting');
 
