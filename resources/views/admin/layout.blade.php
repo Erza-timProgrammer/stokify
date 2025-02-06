@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin | Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -147,7 +149,7 @@
     function initializeTheme() {
         const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const savedTheme = localStorage.getItem('color-theme');
-        
+
         if (savedTheme === 'dark' || (!savedTheme && userPrefersDark)) {
             enableDarkMode();
         } else {
@@ -185,6 +187,35 @@
 });
 
 </script>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Notifikasi Session -->
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Sukses!',
+        text: '{{ session('success') }}',
+        timer: 3000,
+        showConfirmButton: false,
+        background: '{{ config('dark_mode') ? '#1f2937' : '#fff' }}',
+        color: '{{ config('dark_mode') ? '#fff' : '#000' }}'
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('error') }}',
+        background: '{{ config('dark_mode') ? '#1f2937' : '#fff' }}',
+        color: '{{ config('dark_mode') ? '#fff' : '#000' }}'
+    });
+</script>
+@endif
 <!-- darkmode end-->
 </body>
 </html>

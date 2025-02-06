@@ -35,8 +35,11 @@ class DummyUsersSeeder extends Seeder
             ],
         ];
 
-        foreach ($users as $key => $val) {
-            User::create($val);
+        foreach ($users as $userData) {
+            User::firstOrCreate(
+                ['email' => $userData['email']], // mencari berdasarkan email
+                $userData // data yang akan diinsert jika email belum ada
+            );
         }
     }
 }

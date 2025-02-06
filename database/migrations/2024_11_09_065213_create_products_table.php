@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
             // Menambahkan foreign key constraint untuk supplier_id
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade'); 
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
     }
 

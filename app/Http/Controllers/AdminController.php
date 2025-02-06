@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Stock_Transaction;
+use App\Http\Requests\ProductRequest;
 
 class AdminController extends Controller
 {
@@ -35,8 +37,8 @@ class AdminController extends Controller
         $email = auth()->user()->email;
         $transactions = Stock_transaction::all();
         $productCounts = [
-            'Perabotan' => Product::where('category_id', 1)->count(),
-            'Elektronik' => Product::where('category_id', 2)->count(),
+            'Jacket' => Product::where('category_id', 1)->count(),
+            'Sweater Katun' => Product::where('category_id', 2)->count(),
             'Aksesoris' => Product::where('category_id', 3)->count(),
         ];
         return view('admin.menu.dashboard', compact('name', 'email', 'transactions', 'productCounts'));
@@ -45,11 +47,25 @@ class AdminController extends Controller
     {
         $adminName = auth()->user()->name;
         $adminemail = auth()->user()->email;
+        $totalProducts = Product::count();
+        $totalCategories = Category::count();
+        $categories = Category::withCount('products')->get();
+        $minStock = 5; // Ganti dengan nilai batas minimum stok yang Anda inginkan
+        $lowStockProducts = Product::whereHas('stockTransactions', function($query) use ($minStock) {
+            $query->where('quantity', '<', $minStock);
+        })->count();
+        $products = Product::paginate(2);
         return view('admin.menu.product', [
             'name' => $adminName,
-            'email' => $adminemail
+            'email' => $adminemail,
+            'totalProducts' => $totalProducts,
+            'totalCategories' => $totalCategories,
+            'lowStockProducts' => $lowStockProducts,
+            'products' => $products,
+            'categories' =>$categories
         ]);
     }
+
     public function stock()
     {
         $adminName = auth()->user()->name;

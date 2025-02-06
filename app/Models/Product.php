@@ -17,13 +17,13 @@ class Product extends Model
         'description',
         'purchase_price',
         'selling_price',
-        'image',
+        'image'
     ];
 
     // Relasi ke Category
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(category::class);
     }
 
     // Relasi ke Supplier
@@ -31,4 +31,20 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function stockTransactions()
+{
+    return $this->hasMany(Stock_transaction::class, 'product_id');
+}
+
+public function products()
+{
+    return $this->hasMany(Product::class, 'category_id'); // Sesuaikan dengan foreign key di tabel products
+}
+
+public function attributes()
+{
+    return $this->hasMany(ProductAttribute::class);
+}
+
 }

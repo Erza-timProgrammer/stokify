@@ -24,7 +24,7 @@ class ProductAttribute extends Model
      * Get the product that owns the attribute.
      */
     public function product()
-    {
-        return $this->belongsTo(ProductAttribute::class);
-    }
+{
+    return $this->belongsTo(Product::class);
+}
 }

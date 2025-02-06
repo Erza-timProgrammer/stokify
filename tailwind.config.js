@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: "class", // Ini penting untuk dark mode
+    darkMode: "class",
     content: [
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
@@ -9,5 +9,7 @@ export default {
     theme: {
         extend: {},
     },
-    plugins: [require("flowbite/plugin")],
+    plugins: [
+        import('flowbite/plugin.js') 
+    ],
 };
