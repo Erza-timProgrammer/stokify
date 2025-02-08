@@ -10,34 +10,34 @@ class SupplierSeeder extends Seeder
     public function run()
 {
     Supplier::create([
-        'name' => 'Toshiba',
+        'name' => 'PT Indofood',
         'address' => 'Jl. Payakumbuh No.4', 
         'phone' => '02144223432',
-        'email' => 'toshiba@gmail.com',
+        'email' => 'indofood@gmail.com',
     ]);
     Supplier::create([
-        'name' => 'Cosmos',
+        'name' => 'PT. Naraya Cahaya Mentari',
         'address' => 'Jl. Pringgolayan No.4', 
         'phone' => '02129834562',
-        'email' => 'cosmos@gmail.com',
+        'email' => 'ncm@gmail.com',
     ]);
     Supplier::create([
-        'name' => 'Philips',
+        'name' => 'PT Jaya Utama Santika',
         'address' => 'Jl. Ungaran No.3', 
         'phone' => '0214927341',
-        'email' => 'philips@gmail.com',
+        'email' => 'jaya@gmail.com',
     ]);
     Supplier::create([
-        'name' => 'uniqlo',
+        'name' => 'Big Day Mart',
         'address' => 'Jl. Harahap No.124', 
         'phone' => '02177736221',
-        'email' => 'uniqlo@gmail.com',
+        'email' => 'bdm@gmail.com',
     ]);
     Supplier::create([
-        'name' => 'Ikea', 
+        'name' => 'CV 7 BROTHERS', 
         'address' => 'Jl. Indah No.363', 
         'phone' => '0211162628',
-        'email' => 'ikea@gmail.com',
+        'email' => 'brother@gmail.com',
     ]);
 }
 

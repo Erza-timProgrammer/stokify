@@ -17,7 +17,10 @@ class Product extends Model
         'description',
         'purchase_price',
         'selling_price',
-        'image'
+        'image',
+        'stock',
+        'minimum_stock',
+        'maximum_stock',
     ];
 
     // Relasi ke Category

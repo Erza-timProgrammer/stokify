@@ -5,12 +5,15 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffGudangController;
 use App\Http\Controllers\ManajerGudangController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\StockTransactionController;
+use App\Http\Controllers\StockOpnameController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/', [LoginController::class, 'index']);
+Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/', [LoginController::class, 'login']);
 
 Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:Admin']);
@@ -31,7 +34,7 @@ Route::get('/admin/product', [AdminController::class, 'product'])->name('admin.m
 // Route::put('admin/products/{product}', [AdminController::class, 'update'])->name('products.update');
 
 Route::get('/admin/stock', [AdminController::class, 'stock'])->name('admin.menu.stock');
-Route::get('/admin/supplier', [AdminController::class, 'supplier'])->name('admin.menu.supplier');
+// Route::get('/admin/supplier', [AdminController::class, 'supplier'])->name('admin.menu.supplier');
 Route::get('/admin/user', [AdminController::class, 'user'])->name('admin.menu.user');
 Route::get('/admin/report', [AdminController::class, 'report'])->name('admin.menu.report');
 Route::get('/admin/setting', [AdminController::class, 'setting'])->name('admin.menu.setting');
@@ -91,3 +94,22 @@ Route::post('/admin/products/store', [ProductController::class, 'store'])->name(
 
 Route::get('admin/products/search', [ProductController::class, 'search'])->name('admin.products.search');
 
+
+Route::get('/transaction/create/{type}', [TransactionController::class, 'create'])
+    ->name('transaction.create');
+
+Route::get('/stock-opname/create', [StockOpnameController::class, 'create'])
+    ->name('stock-opname.create');
+
+
+    Route::get('/admin/suppliers', [SupplierController::class, 'index'])->name('admin.menu.supplier');
+    Route::post('/admin/suppliers', [SupplierController::class, 'store'])->name('admin.suppliers.store');
+    Route::delete('/admin/suppliers/{id}', [SupplierController::class, 'destroy'])->name('admin.suppliers.destroy');
+    Route::get('/admin/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('admin.menu.suppliers.edit');
+    Route::put('/admin/suppliers/{id}', [SupplierController::class, 'update'])->name('admin.suppliers.update');
+
+Route::get('/admin/users', [AdminController::class, 'user'])->name('admin.menu.user');
+Route::post('/admin/users', [AdminController::class, 'userStore'])->name('admin.users.store');
+
+Route::get('/admin/setting', [SettingController::class, 'index'])->name('admin.menu.setting');
+Route::post('/admin/setting', [SettingController::class, 'update'])->name('admin.setting.update');

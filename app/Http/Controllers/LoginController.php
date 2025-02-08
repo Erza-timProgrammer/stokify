@@ -5,66 +5,86 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\ActivityLog;
+use App\Models\Setting;
 
 class LoginController extends Controller
 {
-    function index()
+    public function index()
     {
-        return view('login');
+        $setting = Setting::first(); // Ambil data dari database
+        return view('login', compact('setting')); // Kirim ke view
     }
 
-    function login(Request $request)
-    {
-        $request->validate(
-            [
-                'email' => 'required',
-                'password' => 'required',
-            ],
-            [
-                'email.required' => 'Email wajib di isi !',
-                'password.required' => 'Password wajib di isi !',
-            ]
-        );
+    public function login(Request $request)
+{
+    // Validasi input
+    $request->validate(
+        [
+            'email'    => 'required',
+            'password' => 'required',
+        ],
+        [
+            'email.required'    => 'Email wajib di isi !',
+            'password.required' => 'Password wajib di isi !',
+        ]
+    );
 
-        $infologin = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+    $infologin = [
+        'email'    => $request->email,
+        'password' => $request->password,
+    ];
 
-        if (Auth::attempt($infologin, $request->filled('remember'))) {
-            $user = Auth::user();
-            switch ($user->role) {
-                case 'Admin':
-                    return redirect()->intended('/admin/dashboard');
-                    break;
-                case 'Staff Gudang':
-                    return redirect()->intended('/staff-gudang/dashboard');
-                    break;
-                case 'Manajer Gudang':
-                    return redirect()->intended('/manajer-gudang/dashboard');
-                    break;
-                default:
-                    return redirect()->intended('/dashboard');
-            }
-        } else {
-            $errors = new \Illuminate\Support\MessageBag();
+    if (Auth::attempt($infologin, $request->filled('remember'))) {
+        // Catat aktivitas login setelah berhasil login
+        ActivityLog::create([
+            'user_id'  => auth()->id(),
+            'activity' => 'Login',
+            'detail'   => 'User berhasil login pada ' . now()->format('Y-m-d H:i:s'),
+        ]);
 
-            if (!Auth::validate($infologin)) {
-                if (!User::where('email', $request->email)->exists()) {
-                    $errors->add('email', 'Email tidak ditemukan.');
-                } else {
-                    $errors->add('password', 'Password salah.');
-                }
-            }
-
-            return redirect('/')->withErrors($errors)->withInput();
+        $user = Auth::user();
+        switch ($user->role) {
+            case 'Admin':
+                return redirect()->intended('/admin/dashboard');
+            case 'Staff Gudang':
+                return redirect()->intended('/staff-gudang/dashboard');
+            case 'Manajer Gudang':
+                return redirect()->intended('/manajer-gudang/dashboard');
+            default:
+                return redirect()->intended('/dashboard');
         }
+    } else {
+        $errors = new \Illuminate\Support\MessageBag();
+
+        if (!Auth::validate($infologin)) {
+            if (!User::where('email', $request->email)->exists()) {
+                $errors->add('email', 'Email tidak ditemukan.');
+            } else {
+                $errors->add('password', 'Password salah.');
+            }
+        }
+
+        return redirect('/')->withErrors($errors)->withInput();
     }
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/login')->with('message', 'Successfully logged out!');
+}
+
+public function logout(Request $request)
+{
+    // Cek apakah user masih terautentikasi sebelum logout
+    if (auth()->check()) {
+        ActivityLog::create([
+            'user_id'  => auth()->id(),
+            'activity' => 'Logout',
+            'detail'   => 'User berhasil logout pada ' . now()->format('Y-m-d H:i:s'),
+        ]);
     }
+
+    // Proses logout
+    auth()->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/');
+}
 }

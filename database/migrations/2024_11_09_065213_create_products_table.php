@@ -21,6 +21,12 @@ return new class extends Migration
             $table->decimal('purchase_price', 10, 2); // Contoh: 10 digit total, 2 digit di belakang koma
             $table->decimal('selling_price', 10, 2); // Contoh: 10 digit total, 2 digit di belakang koma
             $table->string('image')->nullable();
+            // Menambahkan kolom 'stock' untuk jumlah stok saat ini
+            $table->integer('stock')->default(0)->after('image');
+            // Menambahkan kolom 'minimum_stock' untuk batas stok minimum
+            $table->integer('minimum_stock')->default(0)->after('stock');
+            // Menambahkan kolom 'maximum_stock' untuk batas stok maksimum
+            $table->integer('maximum_stock')->default(0)->after('minimum_stock');
             $table->timestamps(); // Menambahkan kolom created_at dan updated_at
 
             // Menambahkan foreign key constraint untuk category_id

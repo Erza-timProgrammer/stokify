@@ -1,39 +1,31 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="container mx-auto p-8">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Pengaturan Umum Aplikasi</h1>
-        
-        <form method="POST" action="#" enctype="multipart/form-data" class="space-y-6">
+<div class="p-6 w-full min-h-screen bg-gray-100 dark:bg-gray-900">
+    <h1 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Pengaturan Aplikasi</h1>
+    @if(session('success'))
+        <div class="bg-green-500 text-white p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+        <form action="{{ route('admin.setting.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            
-            <!-- Input Nama Aplikasi -->
-            <div>
-                <label for="app_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Aplikasi</label>
-                <input type="text" id="app_name" name="app_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Masukkan nama aplikasi" required>
+            <div class="mb-4">
+                <label for="web_name" class="block text-gray-600 dark:text-gray-300 mb-1">Nama Web</label>
+                <input type="text" id="web_name" name="web_name" value="{{ old('web_name', $setting->web_name ?? '') }}" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300 dark:focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" required>
             </div>
-            
-            <!-- Input Logo Aplikasi -->
-            <div>
-                <label for="app_logo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Logo Aplikasi</label>
-                <input type="file" id="app_logo" name="app_logo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Unggah logo baru jika ingin mengganti logo aplikasi.</p>
+            <div class="mb-4">
+                <label for="logo" class="block text-gray-600 dark:text-gray-300 mb-1">Logo</label>
+                <input type="file" id="logo" name="logo" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300 dark:focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
             </div>
-
-            <!-- Preview Logo -->
-            <div class="mt-4">
-                <label class="block text-sm font-medium text-gray-900 dark:text-white">Preview Logo Saat Ini:</label>
-                <div class="mt-2">
-                    <img src="{{ asset('path/to/current/logo.png') }}" alt="Logo Saat Ini" class="h-20 w-auto rounded-md border dark:border-gray-700">
+            @if(isset($setting) && $setting->logo)
+                <div class="mb-4">
+                    <img src="{{ asset('storage/' . $setting->logo) }}" alt="Logo" class="w-32 h-32">
                 </div>
-            </div>
-
-            <!-- Tombol Submit -->
+            @endif
             <div>
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md">
-                    Simpan Pengaturan
-                </button>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 dark:hover:bg-green-400">Simpan</button>
             </div>
         </form>
     </div>

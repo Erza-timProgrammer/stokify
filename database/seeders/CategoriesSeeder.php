@@ -10,16 +10,16 @@ class CategoriesSeeder extends Seeder
     public function run()
     {
     Category::create([
-        'name' => 'Elektronik Rumah Tangga',
-        'description' => 'Kategori yang mencakup berbagai peralatan elektronik untuk rumah tangga.',
+        'name' => 'Snack',
+        'description' => 'Kategori yang mencakup berbagai jenis makanan ringan.',
     ]);
     Category::create([
-        'name' => 'Perabotan Rumah Tangga',
-        'description' => 'Kategori yang mencakup berbagai peralatan Perabotan untuk rumah tangga.',
+        'name' => 'Makanan Instant',
+        'description' => 'Kategori yang mencakup berbagai jenis makanan siap saji.',
     ]);
     Category::create([
-        'name' => 'Aksesoris Rumah Tangga',
-        'description' => 'Kategori yang mencakup berbagai peralatan Aksesoris untuk rumah tangga.',
+        'name' => 'Minuman',
+        'description' => 'Kategori yang mencakup berbagai minuman kemasan.',
     ]);
 }
 }
