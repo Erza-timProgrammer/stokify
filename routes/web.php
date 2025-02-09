@@ -49,10 +49,19 @@ Route::get('/staff-gudang/setting', [StaffGudangController::class, 'setting'])->
 // Menu dari Manajer Gudang
 
 Route::get('/manajer-gudang/dashboard', [ManajerGudangController::class, 'dashboard'])->name('manajer.menu.dashboard');
+//Product
 Route::get('/manajer-gudang/product', [ManajerGudangController::class, 'product'])->name('manajer.menu.product');
+Route::get('/manajer/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/admin/product/store', [ProductController::class, 'store'])->name('product.store');
+
 Route::get('/manajer-gudang/stock', [ManajerGudangController::class, 'stock'])->name('manajer.menu.stock');
 Route::get('/manajer-gudang/supplier', [ManajerGudangController::class, 'supplier'])->name('manajer.menu.supplier');
+
+//Report
 Route::get('/manajer-gudang/report', [ManajerGudangController::class, 'report'])->name('manajer.menu.report');
+Route::get('/manajer/report/pdf', [ManajerGudangController::class, 'printPdf'])->name('manajer.report.pdf');
+
+
 Route::get('/manajer-gudang/setting', [ManajerGudangController::class, 'setting'])->name('manajer.menu.setting');
 
 // Untuk menampilkan form tambah produk
