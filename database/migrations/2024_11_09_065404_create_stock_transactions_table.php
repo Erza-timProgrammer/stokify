@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('type', ['Masuk', 'Keluar']);
+            $table->enum('type', ['masuk', 'keluar']);
             $table->integer('quantity');
+            $table->integer('balance')->default(0); // Kolom balance untuk FIFO
             $table->date('date');
             $table->enum('status', ['Pending', 'Diterima', 'Ditolak', 'Dikeluarkan']);
             $table->text('notes')->nullable();
@@ -34,4 +35,3 @@ return new class extends Migration
         Schema::dropIfExists('stock_transactions');
     }
 };
-

@@ -1,65 +1,95 @@
 @extends('admin.layout')
 
 @section('content')
-<!-- Main Content Container -->
-<div class="p-2 w-full min-h-screen bg-gray-100 dark:bg-gray-900">
-  <header class="py-4 mb-4">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Overview</h1>
-      <!-- Menampilkan nama pengguna -->
-      <p class="text-gray-600 dark:text-gray-300"><span class="text-red-500">Welcome,</span> {{ $name }} ({{ $email }})</p>
-    </div>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Menampilkan jumlah produk berdasarkan kategori -->
-      @foreach($productCounts as $category => $count)
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">{{ $category }}</h2>
-          <p class="text-4xl font-bold text-gray-800 dark:text-gray-100">{{ $count }}</p>
-          <p class="text-gray-500 dark:text-gray-400 text-sm">Total produk dalam kategori {{ $category }}</p>
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Dashboard Admin</h1>
+    
+    <!-- Ringkasan Informasi -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Jumlah Produk -->
+        <div class="bg-white dark:bg-gray-800 shadow rounded p-4">
+            <h2 class="text-xl text-gray-900 dark:text-gray-100">Jumlah Produk</h2>
+            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $productCount }}</p>
         </div>
-      @endforeach
+        <!-- Transaksi Masuk -->
+        <div class="bg-white dark:bg-gray-800 shadow rounded p-4">
+            <h2 class="text-xl text-gray-900 dark:text-gray-100">Transaksi Masuk</h2>
+            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $incomingCount }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">({{ $startDate }} s/d {{ $endDate }})</p>
+        </div>
+        <!-- Transaksi Keluar -->
+        <div class="bg-white dark:bg-gray-800 shadow rounded p-4">
+            <h2 class="text-xl text-gray-900 dark:text-gray-100">Transaksi Keluar</h2>
+            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $outgoingCount }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">({{ $startDate }} s/d {{ $endDate }})</p>
+        </div>
     </div>
 
-    <!-- Menampilkan transaksi stok -->
-    <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Transaksi Stok</h2>
-      <table class="w-full text-left">
-        <thead>
-          <tr>
-            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">ID</th>
-            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">Nama Produk</th>
-            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">Jumlah</th>
-            <th class="px-4 py-2 text-gray-600 dark:text-gray-300">Tanggal</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($transactions as $transaction)
-            <tr class="border-t border-gray-200 dark:border-gray-700">
-              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->id }}</td>
-              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->product->name }}</td>
-              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->quantity }}</td>
-              <td class="px-4 py-2 text-gray-800 dark:text-gray-100">{{ $transaction->created_at->format('d-m-Y') }}</td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
+    <!-- Grafik Stok Barang (Transaksi Harian) -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded p-4 mt-6">
+        <h2 class="text-xl mb-4 text-gray-900 dark:text-gray-100">Grafik Stok Barang (Transaksi Harian)</h2>
+        <canvas id="stockChart"></canvas>
     </div>
-  </main>
 
-  <footer class="bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 py-4">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-      <p>&copy; 2019-2024 FlowOrb. All rights reserved.</p>
-      <div class="space-x-4">
-        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Privacy Policy</a>
-        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Licensing</a>
-        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Cookie Policy</a>
-        <a href="#" class="hover:text-gray-400 dark:hover:text-gray-500">Contact</a>
-      </div>
+    <!-- Aktivitas Pengguna Terbaru -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded p-4 mt-6">
+        <h2 class="text-xl mb-4 text-gray-900 dark:text-gray-100">Aktivitas Pengguna Terbaru</h2>
+        <ul>
+            @foreach($recentActivities as $activity)
+                <li class="border-b border-gray-300 dark:border-gray-700 py-2">
+                    <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $activity->user->name ?? 'User' }}</span> 
+                    melakukan <span class="italic text-gray-800 dark:text-gray-300">{{ $activity->action }}</span> pada 
+                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ $activity->created_at->format('d-m-Y H:i') }}</span>
+                </li>
+            @endforeach
+        </ul>
     </div>
-  </footer>
 </div>
+@endsection
 
+@section('scripts')
+<!-- Sertakan Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('stockChart').getContext('2d');
+    const stockChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @json($dates),
+            datasets: [
+                {
+                    label: 'Transaksi Masuk',
+                    data: @json($incomingData),
+                    borderColor: 'rgb(34, 197, 94)', // Hijau
+                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                    fill: true,
+                },
+                {
+                    label: 'Transaksi Keluar',
+                    data: @json($outgoingData),
+                    borderColor: 'rgb(239, 68, 68)', // Merah
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    fill: true,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0,
+                        color: '#ffffff' // Warna teks pada dark mode
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#ffffff' // Warna teks pada dark mode
+                    }
+                }
+            }
+        }
+    });
+</script>
 @endsection

@@ -97,6 +97,8 @@ Route::get('admin/products/search', [ProductController::class, 'search'])->name(
 
 Route::get('/transaction/create/{type}', [TransactionController::class, 'create'])
     ->name('transaction.create');
+// Route untuk menyimpan transaksi
+Route::post('transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
 
 Route::get('/stock-opname/create', [StockOpnameController::class, 'create'])
     ->name('stock-opname.create');

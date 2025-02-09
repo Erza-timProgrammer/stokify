@@ -19,16 +19,25 @@ class Stock_transaction extends Model
         'user_id',
         'type',
         'quantity',
+        'balance',
         'date',
         'status',
         'notes',
     ];
 
     /**
-     * Get the product that owns the attribute.
+     * Get the product associated with the stock transaction.
      */
-    public function Stock_transaction()
+    public function product()
     {
-        return $this->belongsTo(Stock_transaction::class);
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    /**
+     * Get the user who performed the transaction.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

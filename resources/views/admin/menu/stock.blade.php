@@ -71,7 +71,7 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">{{ \Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($transaction->type == 'in')
+                                        @if ($transaction->type === 'masuk')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
                                                 Masuk
                                             </span>
@@ -81,11 +81,12 @@
                                             </span>
                                         @endif
                                     </td>
+                                    
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">{{ $transaction->product->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
                                         {{ $transaction->quantity > 0 ? '+' . $transaction->quantity : $transaction->quantity }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">{{ $transaction->note }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">{{ $transaction->notes }}</td>
                                 </tr>
                             @empty
                                 <tr>

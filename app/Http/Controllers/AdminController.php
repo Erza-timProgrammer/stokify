@@ -14,6 +14,7 @@ use App\Models\ActivityLog;
 use App\Models\StockOpname;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 
 class AdminController extends Controller
@@ -35,19 +36,81 @@ class AdminController extends Controller
     }
 
 
-    // menu di sidebar
-    public function dashboard()
-    {
-        $name = auth()->user()->name;
-        $email = auth()->user()->email;
-        $transactions = Stock_transaction::all();
-        $productCounts = [
-            'Jacket' => Product::where('category_id', 1)->count(),
-            'Sweater Katun' => Product::where('category_id', 2)->count(),
-            'Aksesoris' => Product::where('category_id', 3)->count(),
-        ];
-        return view('admin.menu.dashboard', compact('name', 'email', 'transactions', 'productCounts'));
+// Menu di sidebar
+public function dashboard(Request $request)
+{
+    // Ambil data user yang sedang login
+    $name  = auth()->user()->name;
+    $email = auth()->user()->email;
+
+    // Tentukan periode (default: 30 hari terakhir)
+    // Ambil input tanggal sebagai string, lalu parsing menjadi instance Carbon
+    $startDateInput = $request->input('start_date', Carbon::now()->subDays(30)->toDateString());
+    $endDateInput   = $request->input('end_date', Carbon::now()->toDateString());
+    $startDate      = Carbon::parse($startDateInput);
+    $endDate        = Carbon::parse($endDateInput);
+
+    // Ambil transaksi dalam periode tertentu
+    $transactions = Stock_Transaction::whereBetween('created_at', [$startDate, $endDate])->get();
+
+    // Hitung jumlah produk per kategori
+    $productCounts = [
+        'Jacket'        => Product::where('category_id', 1)->count(),
+        'Sweater Katun' => Product::where('category_id', 2)->count(),
+        'Aksesoris'     => Product::where('category_id', 3)->count(),
+    ];
+
+    // Hitung jumlah produk total untuk menampilkan ringkasan "Jumlah Produk"
+    $productCount = Product::count();
+
+    // Hitung jumlah transaksi masuk & keluar dalam periode tersebut
+    $incomingCount = Stock_Transaction::where('type', 'in')
+                        ->whereBetween('created_at', [$startDate, $endDate])
+                        ->count();
+
+    $outgoingCount = Stock_Transaction::where('type', 'out')
+                        ->whereBetween('created_at', [$startDate, $endDate])
+                        ->count();
+
+    // Siapkan data untuk grafik: transaksi harian selama periode
+    $dates        = [];
+    $incomingData = [];
+    $outgoingData = [];
+    $period       = CarbonPeriod::create($startDate, $endDate);
+    foreach ($period as $date) {
+        $formattedDate = $date->format('Y-m-d');
+        $dates[] = $formattedDate;
+        
+        $dailyIncoming = Stock_Transaction::where('type', 'in')
+                            ->whereDate('created_at', $formattedDate)
+                            ->count();
+        $dailyOutgoing = Stock_Transaction::where('type', 'out')
+                            ->whereDate('created_at', $formattedDate)
+                            ->count();
+        
+        $incomingData[] = $dailyIncoming;
+        $outgoingData[] = $dailyOutgoing;
     }
+
+    // Ambil 5 aktivitas pengguna terbaru
+    $recentActivities = StockOpname::latest()->limit(5)->get();
+
+    return view('admin.menu.dashboard', compact(
+        'name',
+        'email',
+        'transactions',
+        'productCounts',
+        'productCount',  // variabel baru untuk total produk
+        'incomingCount',
+        'outgoingCount',
+        'dates',
+        'incomingData',
+        'outgoingData',
+        'recentActivities',
+        'startDate',
+        'endDate'
+    ));
+}
     public function product()
     {
         $adminName = auth()->user()->name;
